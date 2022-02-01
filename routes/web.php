@@ -2,6 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', 'CartController@index')->name('index');
-Route::get('/card', 'CartController@card')->name('card');
-Route::get('/checkout', 'CartController@checkout')->name('checkout');
+Route::get('/', 'ShopCartController@index')->name('index');
+Route::get('/card', 'ShopCartController@card')->name('card');
+Route::get('/checkout', 'ShopCartController@checkout')->name('checkout');
