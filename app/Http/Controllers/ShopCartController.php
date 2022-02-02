@@ -49,10 +49,13 @@ class ShopCartController extends Controller
 
                 $cart[$id]['quantity']++;
 
-                session()->put('cart', $cart); // this code put product of choose in cart
+                if($quantity_product > $cart[$id]['quantity']){
+                    session()->put('cart', $cart); // this code put product of choose in cart
 
-                return redirect()->back()->with('success', 'Product added to cart successfully!');
-
+                    return redirect()->back()->with('success', 'Product added to cart successfully!');
+                } else {
+                    return redirect()->back()->with('error', 'There are only '.$product->quantity.' products in stock!');
+                } 
             }
 
             // if item not exist in cart then add to cart with quantity = 1
@@ -77,12 +80,18 @@ class ShopCartController extends Controller
         return view('card');
     }
     // update product of choose in cart
-	public function updateToCart(Request $request){		
+	public function updateToCart(Request $request){	
+        $product_item=Products::find($request->id);	
+
 		if($request->id and $request->quantity){
-			$cart=session()->get('cart');
-			$cart[$request->id]['quantity']=$request->quantity;
-			session()->put('cart', $cart);
-			session()->flash('success', 'Card updated successfully');
+            if($request->quantity > $product_item->quantity){
+                session()->flash('error', 'There are only '.$product_item->quantity.' products in stock!');
+            } else {
+                $cart=session()->get('cart');
+                $cart[$request->id]['quantity']=$request->quantity;
+                session()->put('cart', $cart);
+                session()->flash('success', 'Card updated successfully!');
+            }			
 		}
 	}
     public function removeFromCart(Request $request){

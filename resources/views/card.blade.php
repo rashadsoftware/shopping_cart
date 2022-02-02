@@ -32,7 +32,8 @@
 									</td>
 									<td>{{ $details['price'] }}$</td>
 									<td>
-										<input type="number" class="form-control text-center update-cart quantity" value="{{ $details['quantity'] }}" data-id="{{ $id }}"/>
+										@php $quantity_count=DB::table('products')->where('id', $id)->first() @endphp
+										<input type="number" class="form-control text-center update-cart quantity" value="{{ $details['quantity'] }}" data-id="{{ $id }}" max="{{$quantity_count->quantity}}"/>
 									</td>
 									<td>${{ $details['price'] * $details['quantity'] }}$</td>
 									<td><button class="btn btn-danger remove-from-cart" data-id="{{ $id }}"><i class="fas fa-trash-alt remove-from-cart"></i></button></td>
