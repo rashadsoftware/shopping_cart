@@ -28,7 +28,7 @@
 									<a class="nav-link {{ Route::is('index') ? 'active' : '' }}" href="{{route('index')}}">Home</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link {{ Route::is('card') || Route::is('checkout') ? 'active' : '' }}" href="{{route('card')}}">Cart</a>
+									<a class="nav-link {{ Route::is('card') || Route::is('checkout') ? 'active' : '' }}" href="{{route('card')}}">Cart ({{ session()->has('cart') ? count(session('cart')) : 0}})</a>
 								</li>
 							</ul>
 						</div>
@@ -36,3 +36,15 @@
 				</nav>
 			</div>
 		</header>
+		<section class="mt-3">
+			<div class="container">
+				@if(Session::has('success'))
+					<div class="alert alert-success alert-dismissible">
+						{{ Session::get('success')}}
+					</div>
+				@endif
+				@if(Session::has('error'))
+					<div class="alert alert-danger alert-dismissible">
+						{{ Session::get('error')}}
+					</div>
+				@endif

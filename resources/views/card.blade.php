@@ -1,93 +1,126 @@
 @extends('includes.master')
 
 @section('content')
-		<section class="mt-3">
-			<div class="container">
-				<div class="row">
-					<div class="col-12">
-						<div class="card p-3">
-							<table class="table">
-								<thead>
-									<tr style="text-align: center">
-										<th scope="col" style="width: 60px">Image</th>
-										<th scope="col" style="text-align: left">Product Name</th>
-										<th scope="col">Price</th>
-										<th scope="col" style="width: 10%">Quantity</th>
-										<th scope="col">Total</th>
-										<th scope="col">Total</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr style="vertical-align: middle; text-align: center">
-										<td>
-											<img
-												src="assets/img/product/1.png"
-												alt="card image"
-												width="100"
-											/>
-										</td>
-										<td style="text-align: left">
-											<h5 class="card-title">Card Product Title</h5>
-											<h6 class="card-subtitle mb-2 text-muted">
-												Card category
-											</h6>
-										</td>
-										<td>699$</td>
-										<td>
-											<input type="text" class="form-control" />
-										</td>
-										<td>699$</td>
-										<td><i class="fas fa-trash-alt"></i></td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
+	<div class="row">
+		<div class="col-12">
+			<div class="card p-3">
+				<table class="table">
+					<thead>
+						<tr style="text-align: center">
+							<th scope="col" style="width: 60px">Image</th>
+							<th scope="col" style="text-align: left">Product Name</th>
+							<th scope="col">Price</th>
+							<th scope="col" style="width: 10%">Quantity</th>
+							<th scope="col">Total</th>
+							<th scope="col">Total</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php $total = 0 ?>
+						@if(session('cart'))						
+						@foreach(session('cart') as $id => $details)
+							<?php $total += $details['price'] * $details['quantity'] ?>
+								<tr style="vertical-align: middle; text-align: center">
+									<td>
+										<img src="assets/img/products/{{ $details['photo'] }}" alt="card image" width="100" />
+									</td>
+									<td style="text-align: left">
+										<h5 class="card-title">{{ $details['name'] }}</h5>
+										<h6 class="card-subtitle mb-2 text-muted">
+											{{ $details['category'] }}
+										</h6>
+									</td>
+									<td>{{ $details['price'] }}$</td>
+									<td>
+										<input type="number" class="form-control text-center update-cart quantity" value="{{ $details['quantity'] }}" data-id="{{ $id }}"/>
+									</td>
+									<td>${{ $details['price'] * $details['quantity'] }}$</td>
+									<td><button class="btn btn-danger remove-from-cart" data-id="{{ $id }}"><i class="fas fa-trash-alt remove-from-cart"></i></button></td>
+								</tr>
+							@endforeach
+						@endif
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="row mt-3">
+		<div class="d-flex justify-content-between align-items-center">
+			<a href="{{route('index')}}" class="btn btn-primary">Continue Shopping</a>
+		</div>
+	</div>
+	<div class="row mt-3">
+		<div class="col-4">
+			<div class="card">
+				<h5 class="card-header">Card Totals</h5>
+				<div class="card-body">
+					<table class="table mb-0">
+						<tbody>
+							<tr>
+								<th scope="row">Sub Total</th>
+								<td class="text-end">${{ $total }}</td>
+							</tr>
+							<tr>
+								<th scope="row">Shipping</th>
+								<td class="text-end">$ {{ $shipping=100 }}</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
-				<div class="row mt-3">
-					<div class="d-flex justify-content-between align-items-center">
-						<a href="{{route('index')}}" class="btn btn-primary">Continue Shopping</a>
-					</div>
-				</div>
-				<div class="row mt-3">
-					<div class="col-4">
-						<div class="card">
-							<h5 class="card-header">Card Totals</h5>
-							<div class="card-body">
-								<table class="table mb-0">
-									<tbody>
-										<tr>
-											<th scope="row">Sub Total</th>
-											<td class="text-end">$5877</td>
-										</tr>
-										<tr>
-											<th scope="row">Shipping</th>
-											<td class="text-end">$100</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-							<div class="card-footer">
-								<div class="d-flex align-items-center justify-content-between">
-									<div class="ps-1">Total</div>
-									<div class="pe-2">$5977</div>
-								</div>
-							</div>
-						</div>
-						<a
-							href="{{route('checkout')}}"
-							class="btn btn-primary mt-3 text-uppercase d-block"
-							>Proceed to checkout</a
-						>
+				<div class="card-footer">
+					<div class="d-flex align-items-center justify-content-between">
+						<div class="ps-1">Total</div>
+						<div class="pe-2">${{ $total+$shipping }}</div>
 					</div>
 				</div>
 			</div>
-		</section>
+			<a
+				href="{{route('checkout')}}"
+				class="btn btn-primary mt-3 text-uppercase d-block"
+				>Proceed to checkout</a
+			>
+		</div>
+	</div>
+@endsection
 
-		<!-- Optional JavaScript -->
-		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-		<script src="assets/js/jquery-3.6.0.min.js"></script>
-		<script src="assets/js/bootstrap.min.js"></script>
-	</body>
-</html>
+@section('scripts')
+
+
+    <script type="text/javascript">
+		// this function is for update card
+        $(".update-cart").change(function (e) {
+           e.preventDefault();
+		   var ele = $(this);
+
+            $.ajax({
+               url: '{{ url('update-cart') }}',
+               method: "patch",
+               data: {_token: '{{ csrf_token() }}', id: ele.attr("data-id"), quantity: ele.parents("tr").find(".quantity").val()},
+               success: function (response) {
+                   window.location.reload();
+               }
+            });
+        });
+        $(".remove-from-cart").click(function (e) {
+            e.preventDefault();
+            var ele = $(this);
+            if(confirm("Are you sure")) {
+                $.ajax({
+                    url: '{{ url('remove-from-cart') }}',
+                    method: "DELETE",
+                    data: {_token: '{{ csrf_token() }}', id: ele.attr("data-id")},
+                    success: function (response) {
+                        window.location.reload();
+                        
+                    }
+                });
+            }
+        });
+
+		// close alert message with setTimeout() function
+		setTimeout(() => {
+			$(".alert-dismissible").hide();
+		}, 3000);
+    </script>
+
 @endsection
