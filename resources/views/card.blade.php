@@ -50,7 +50,7 @@
 		</div>
 	</div>
 	<div class="row mt-3">
-		<div class="col-4">
+		<div class="col-12 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
 			<div class="card">
 				<h5 class="card-header">Card Totals</h5>
 				<div class="card-body">

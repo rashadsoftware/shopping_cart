@@ -78,7 +78,7 @@ class ShopCartController extends Controller
     }
     // update product of choose in cart
 	public function updateToCart(Request $request){		
-		if($request->$id and $request->quantity){
+		if($request->id and $request->quantity){
 			$cart=session()->get('cart');
 			$cart[$request->id]['quantity']=$request->quantity;
 			session()->put('cart', $cart);
