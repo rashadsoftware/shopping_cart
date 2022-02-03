@@ -22,16 +22,22 @@
 					<div class="card-footer" style="border-top:none; background:none">
 						<div class="d-flex justify-content-between align-items-center">
 							@if($product->quantity > 0)
-							<div class="btn btn-success mb-3">in stock</div>
+							<div class="btn btn-success mb-3" style="cursor:text">in stock</div>
 							@else
-							<div class="btn btn-secondary mb-3">out of stock</div>
+							<div class="btn btn-secondary mb-3" style="cursor:text">out of stock</div>
 							@endif
 							<p class="fs-5 fw-bold">{{$product->price}} USD</p>
 						</div>
 
-						<a href="{{route('add_to_cart', $product->id)}}" class="btn btn-primary d-block text-capitalize">
-							<i class="fas fa-shopping-basket me-2"></i> Add to Cart
-						</a>
+						@if($product->quantity > 0)
+							<button class="btn btn-primary w-100 text-capitalize product-cart" data-id="{{ $product->id }}">
+								<i class="fas fa-shopping-basket me-2"></i> Add to Cart
+							</button>
+						@else
+							<button disabled class="btn btn-secondary w-100 text-capitalize product-cart" data-id="{{ $product->id }}">
+								<i class="fas fa-shopping-basket me-2"></i> Add to Cart
+							</button>
+						@endif
 					</div>
 				</div>
 			</div>
@@ -47,6 +53,22 @@
 @section('scripts')
 <script>
 	$(function(){
+		// this function is for delete card
+        $(".product-cart").click(function (e) {
+            e.preventDefault();
+            var ele = $(this);
+            
+			$.ajax({
+				url: '{{ url('add-to-cart') }}',
+				method: "POST",
+				data: {_token: '{{ csrf_token() }}', id: ele.attr("data-id")},
+				success: function (response) {
+					window.location.reload();
+					
+				}
+			});
+        });
+
 		// close alert message with setTimeout() function
 		setTimeout(() => {
 			$(".alert-dismissible").hide();

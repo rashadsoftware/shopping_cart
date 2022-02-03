@@ -63,7 +63,7 @@
 							</tr>
 							<tr>
 								<th scope="row">Shipping</th>
-								<td class="text-end">$ {{ $shipping=100 }}</td>
+								<td class="text-end">${{ $shipping=100 }}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -85,8 +85,6 @@
 @endsection
 
 @section('scripts')
-
-
     <script type="text/javascript">
 		// this function is for update card
         $(".update-cart").change(function (e) {
@@ -102,6 +100,8 @@
                }
             });
         });
+
+		// this function is for delete card
         $(".remove-from-cart").click(function (e) {
             e.preventDefault();
             var ele = $(this);

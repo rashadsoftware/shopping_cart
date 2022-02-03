@@ -14,7 +14,7 @@
 		<link rel="shortcut icon" type="image/jpg" href="assets/img/favicon.png" />
 	</head>
 	<body>
-		<header>
+		<header class="position-fixed w-100 bg-white" style="z-index:1; top:0">
 			<div class="container">
 				<nav class="navbar navbar-expand-lg navbar-light">
 					<div class="container-fluid">
@@ -36,7 +36,7 @@
 				</nav>
 			</div>
 		</header>
-		<section class="mt-3">
+		<section class="mt-3" style="padding-top:60px">
 			<div class="container">
 				@if(Session::has('success'))
 					<div class="alert alert-success alert-dismissible">

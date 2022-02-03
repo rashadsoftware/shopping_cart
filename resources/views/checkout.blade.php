@@ -119,34 +119,56 @@
 			<div class="card">
 				<div class="card-body">
 					<h4 class="mb-4">Your Order</h4>
-					<table class="table mb-5">
+					<table class="table mb-3">
 						<thead>
 							<tr>
+								<th scope="col">Image</th>
 								<th scope="col">Product</th>
+								<th scope="col">Count</th>
 								<th scope="col">Total</th>
 								<th scope="col"></th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>Undefined Tool IRadix DPS3000SY</td>
-								<td>$5877</td>
-								<td><i class="fas fa-trash-alt"></i></td>
-							</tr>
-							<tr>
-								<td>Product Total Electric Planer Brandix KL370090G</td>
-								<td>$100</td>
-								<td><i class="fas fa-trash-alt"></i></td>
-							</tr>
+							<?php $total = 0 ?>
+							@if(session('cart'))
+								@foreach(session('cart') as $id => $details)
+									<?php $total += $details['price'] * $details['quantity'] ?>
+									<tr style="vertical-align:middle">
+										<td>
+											<img src="assets/img/products/{{ $details['photo'] }}" alt="card image" width="50" />
+										</td>
+										<td>
+											<span class="fw-bold">{{ $details['name'] }}</span> </br>
+											{{ $details['category'] }}
+										</td>
+										<td class="text-center">{{ $details['quantity'] }}</td>
+										<td>${{ $details['price'] * $details['quantity'] }}</td>
+										<td>
+											<button class="btn btn-danger remove-from-cart" data-id="{{ $id }}"><i class="fas fa-trash-alt remove-from-cart"></i></button>
+										</td>
+									</tr>
+								@endforeach
+							@endif
 						</tbody>
 						<tfoot>
 							<tr>
-								<th>Total</th>
-								<td>$2585</td>
+								<th>Sub Total</th>
 								<td></td>
+								<td></td>
+								<td></td>
+								<td>${{ $total }}</td>
+							</tr>
+							<tr>
+								<th>Shipping</th>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td>${{$shipping=100}}</td>
 							</tr>
 						</tfoot>
 					</table>
+					<h4 class="mb-5 text-end">Total: ${{ $total+$shipping }}</h4>
 					<div class="accordion" id="accordionExample">
 						<div class="accordion-item">
 							<h2 class="accordion-header" id="headingOne">
@@ -261,4 +283,31 @@
 			</div>
 		</div>
 	</div>
+@endsection
+
+@section('scripts')
+    <script type="text/javascript">
+		// this function is for delete card
+        $(".remove-from-cart").click(function (e) {
+            e.preventDefault();
+            var ele = $(this);
+            if(confirm("Are you sure")) {
+                $.ajax({
+                    url: '{{ url('remove-from-cart') }}',
+                    method: "DELETE",
+                    data: {_token: '{{ csrf_token() }}', id: ele.attr("data-id")},
+                    success: function (response) {
+                        window.location.reload();
+                        
+                    }
+                });
+            }
+        });
+
+		// close alert message with setTimeout() function
+		setTimeout(() => {
+			$(".alert-dismissible").hide();
+		}, 3000);
+    </script>
+
 @endsection

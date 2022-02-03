@@ -12,7 +12,8 @@ class ShopCartController extends Controller
         return view('index', compact('products'));
     }
     // add to cart
-	public function addToCart($id){
+	public function addToCart(Request $request){
+        $id=$request->id;
 		$product=Products::find($id);
 
         if(!$product) {
