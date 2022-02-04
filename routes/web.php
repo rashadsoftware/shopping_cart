@@ -15,4 +15,4 @@ Route::delete('remove-from-cart', 'ShopCartController@removeFromCart')->name('re
 Route::get('/checkout', 'ShopCartController@checkout')->name('checkout');
 
 // customer page
-Route::get('/customers', 'CustomerController@index')->name('customers');
+Route::get('/integrations', 'IntegrationController@index')->name('integrations');

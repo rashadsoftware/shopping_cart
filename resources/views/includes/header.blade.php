@@ -28,7 +28,7 @@
 									<a class="nav-link {{ Route::is('index') ? 'active' : '' }}" href="{{route('index')}}">Home</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link {{ Route::is('customers') ? 'active' : '' }}" href="{{route('customers')}}">Customers</a>
+									<a class="nav-link {{ Route::is('integrations') ? 'active' : '' }}" href="{{route('integrations')}}">Integrations</a>
 								</li>
 								<li class="nav-item">
 									<a class="nav-link {{ Route::is('card') || Route::is('checkout') ? 'active' : '' }}" href="{{route('card')}}">Cart ({{ session()->has('cart') ? count(session('cart')) : 0}})</a>
