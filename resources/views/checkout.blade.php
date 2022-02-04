@@ -1,6 +1,10 @@
 @extends('includes.master')
 
-@section('content')		
+@section('title', 'Checkout')
+
+@section('content')	
+	<?php $total = 0 ?>
+	@if(session('cart'))	
 	<div class="row">
 		<div class="col-12 col-lg-6">
 			<div class="card">
@@ -130,26 +134,23 @@
 							</tr>
 						</thead>
 						<tbody>
-							<?php $total = 0 ?>
-							@if(session('cart'))
-								@foreach(session('cart') as $id => $details)
-									<?php $total += $details['price'] * $details['quantity'] ?>
-									<tr style="vertical-align:middle">
-										<td>
-											<img src="assets/img/products/{{ $details['photo'] }}" alt="card image" width="50" />
-										</td>
-										<td>
-											<span class="fw-bold">{{ $details['name'] }}</span> </br>
-											{{ $details['category'] }}
-										</td>
-										<td class="text-center">{{ $details['quantity'] }}</td>
-										<td>${{ $details['price'] * $details['quantity'] }}</td>
-										<td>
-											<button class="btn btn-danger remove-from-cart" data-id="{{ $id }}"><i class="fas fa-trash-alt remove-from-cart"></i></button>
-										</td>
-									</tr>
-								@endforeach
-							@endif
+							@foreach(session('cart') as $id => $details)
+								<?php $total += $details['price'] * $details['quantity'] ?>
+								<tr style="vertical-align:middle">
+									<td>
+										<img src="assets/img/products/{{ $details['photo'] }}" alt="card image" width="50" />
+									</td>
+									<td>
+										<span class="fw-bold">{{ $details['name'] }}</span> </br>
+										{{ $details['category'] }}
+									</td>
+									<td class="text-center">{{ $details['quantity'] }}</td>
+									<td>${{ $details['price'] * $details['quantity'] }}</td>
+									<td>
+										<button class="btn btn-danger remove-from-cart" data-id="{{ $id }}"><i class="fas fa-trash-alt remove-from-cart"></i></button>
+									</td>
+								</tr>
+							@endforeach
 						</tbody>
 						<tfoot>
 							<tr>
@@ -283,6 +284,9 @@
 			</div>
 		</div>
 	</div>
+	@else
+		<div class="alert alert-info">To link to this page, the product must be added to the cart</div>
+	@endif
 @endsection
 
 @section('scripts')

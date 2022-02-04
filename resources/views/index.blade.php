@@ -1,17 +1,14 @@
 @extends('includes.master')
 
+@section('title', 'Home')
+
 @section('content')
 	<div class="row">
 		@if($products->count() > 0)
 			@foreach($products as $product)
-			<div class="col-12 col-md-6 col-lg4 col-xl-3 mb-3">
+			<div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-3">
 				<div class="card" style="height: 31rem">
-					<img
-						src="assets/img/products/{{$product->photo}}"
-						class="card-img-top"
-						alt="product"
-						style="height: 14rem"
-					/>
+					<img src="{{asset('/')}}assets/img/products/{{$product->photo}}" class="card-img-top" alt="product" style="height: 14rem" />
 					<div class="card-body">
 						<h5 class="card-title">{{$product->name}}</h5>
 						<h6 class="card-subtitle mb-2 text-muted">{{$product->category}}</h6>

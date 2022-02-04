@@ -6,12 +6,12 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
 		<!-- Bootstrap CSS -->
-		<link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="{{asset('/')}}assets/css/bootstrap.min.css" />
 		<!-- Fontawesome CSS -->
-		<link rel="stylesheet" href="assets/plugin/fontawesome-free-5.15.2/css/all.css" />
+		<link rel="stylesheet" href="{{asset('/')}}assets/plugin/fontawesome-free-5.15.2/css/all.css" />
 
-		<title>Deirvlon Market</title>
-		<link rel="shortcut icon" type="image/jpg" href="assets/img/favicon.png" />
+		<title>Deirvlon Market | @yield('title')</title>
+		<link rel="shortcut icon" type="image/jpg" href="{{asset('/')}}assets/img/favicon.png" />
 	</head>
 	<body>
 		<header class="position-fixed w-100 bg-white" style="z-index:1; top:0">
@@ -28,8 +28,11 @@
 									<a class="nav-link {{ Route::is('index') ? 'active' : '' }}" href="{{route('index')}}">Home</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link {{ Route::is('card') || Route::is('checkout') ? 'active' : '' }}" href="{{route('card')}}">Cart ({{ session()->has('cart') ? count(session('cart')) : 0}})</a>
+									<a class="nav-link {{ Route::is('customers') ? 'active' : '' }}" href="{{route('customers')}}">Customers</a>
 								</li>
+								<li class="nav-item">
+									<a class="nav-link {{ Route::is('card') || Route::is('checkout') ? 'active' : '' }}" href="{{route('card')}}">Cart ({{ session()->has('cart') ? count(session('cart')) : 0}})</a>
+								</li>								
 							</ul>
 						</div>
 					</div>

@@ -1,9 +1,13 @@
 @extends('includes.master')
 
+@section('title', 'Card')
+
 @section('content')
+	<?php $total = 0 ?>	
+	@if(session('cart'))
 	<div class="row">
 		<div class="col-12">
-			<div class="card p-3">
+			<div class="card p-3">				
 				<table class="table">
 					<thead>
 						<tr style="text-align: center">
@@ -15,33 +19,30 @@
 							<th scope="col">Total</th>
 						</tr>
 					</thead>
-					<tbody>
-						<?php $total = 0 ?>
-						@if(session('cart'))						
+					<tbody>																	
 						@foreach(session('cart') as $id => $details)
-							<?php $total += $details['price'] * $details['quantity'] ?>
-								<tr style="vertical-align: middle; text-align: center">
-									<td>
-										<img src="assets/img/products/{{ $details['photo'] }}" alt="card image" width="100" />
-									</td>
-									<td style="text-align: left">
-										<h5 class="card-title">{{ $details['name'] }}</h5>
-										<h6 class="card-subtitle mb-2 text-muted">
-											{{ $details['category'] }}
-										</h6>
-									</td>
-									<td>{{ $details['price'] }}$</td>
-									<td>
-										@php $quantity_count=DB::table('products')->where('id', $id)->first() @endphp
-										<input type="number" class="form-control text-center update-cart quantity" value="{{ $details['quantity'] }}" data-id="{{ $id }}" max="{{$quantity_count->quantity}}"/>
-									</td>
-									<td>${{ $details['price'] * $details['quantity'] }}$</td>
-									<td><button class="btn btn-danger remove-from-cart" data-id="{{ $id }}"><i class="fas fa-trash-alt remove-from-cart"></i></button></td>
-								</tr>
-							@endforeach
-						@endif
+						<?php $total += $details['price'] * $details['quantity'] ?>
+							<tr style="vertical-align: middle; text-align: center">
+								<td>
+									<img src="assets/img/products/{{ $details['photo'] }}" alt="card image" width="100" />
+								</td>
+								<td style="text-align: left">
+									<h5 class="card-title">{{ $details['name'] }}</h5>
+									<h6 class="card-subtitle mb-2 text-muted">
+										{{ $details['category'] }}
+									</h6>
+								</td>
+								<td>{{ $details['price'] }}$</td>
+								<td>
+									@php $quantity_count=DB::table('products')->where('id', $id)->first() @endphp
+									<input type="number" class="form-control text-center update-cart quantity" value="{{ $details['quantity'] }}" data-id="{{ $id }}" max="{{$quantity_count->quantity}}"/>
+								</td>
+								<td>${{ $details['price'] * $details['quantity'] }}$</td>
+								<td><button class="btn btn-danger remove-from-cart" data-id="{{ $id }}"><i class="fas fa-trash-alt remove-from-cart"></i></button></td>
+							</tr>
+						@endforeach						
 					</tbody>
-				</table>
+				</table>				
 			</div>
 		</div>
 	</div>
@@ -82,6 +83,9 @@
 			>
 		</div>
 	</div>
+	@else
+		<div class="alert alert-info">No product has been added to the basket</div>
+	@endif
 @endsection
 
 @section('scripts')

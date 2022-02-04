@@ -13,3 +13,6 @@ Route::delete('remove-from-cart', 'ShopCartController@removeFromCart')->name('re
 
 // checkout page
 Route::get('/checkout', 'ShopCartController@checkout')->name('checkout');
+
+// customer page
+Route::get('/customers', 'CustomerController@index')->name('customers');
