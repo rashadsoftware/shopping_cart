@@ -14,5 +14,6 @@ Route::delete('remove-from-cart', 'ShopCartController@removeFromCart')->name('re
 // checkout page
 Route::get('/checkout', 'ShopCartController@checkout')->name('checkout');
 
-// customer page
+// integrations page
 Route::get('/integrations', 'IntegrationController@index')->name('integrations');
+Route::get('/integrations/{seflink}', 'IntegrationController@itemConnect')->name('integrations.item.connect');
